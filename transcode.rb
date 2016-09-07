@@ -7,7 +7,7 @@ puts "Audio stream :: " + video.audio_stream
 puts "Video codec :: " + video.video_codec
 puts "Resolution :: " +  video.resolution
 
-video.transcode("/Users/aun/tmp/transcode/transcoded.m3u8") do |progress|
+video.transcode("/Users/aun/tmp/transcode/files/transcoded.m3u8") do |progress|
   puts progress
 end
 
