@@ -8,7 +8,7 @@ puts "Video codec :: " + video.video_codec
 puts "Resolution :: " +  video.resolution
 
 options = {
-custom: %w(-s 1920x1080 -c:v libx264 -hls_flags delete_segments -hls_key_info_file file.keyinfo)
+  custom: %w(-b:v 1M -s 1920x1080 -c:v h264 -hls_flags delete_segments -hls_key_info_file file.keyinfo)
 }
 
 transcoder_options = { validate: false }
