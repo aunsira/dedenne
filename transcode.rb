@@ -2,7 +2,6 @@ require 'streamio-ffmpeg'
 require 'fileutils'
 
 FileUtils.mkdir('./files') unless File.exists? './files'
-FileUtils.cp './file.key', './files/file.key'
 
 video = FFMPEG::Movie.new(ARGV[0])
 
@@ -18,8 +17,11 @@ bitrates = {
 }
 
 bitrates.each do |quality, bitrate|
-  segment_file = "./files/out_#{quality}"
+  FileUtils.cp "./hls_#{quality}.key", "./files/hls_#{quality}.key"
+
+  segment_file = "./files/hls_#{quality}"
   output_file = segment_file + ".m3u8"
+  key_info_file = "hls_#{quality}.keyinfo"
 
   options = {
     custom: %W( -b:v #{bitrate}k
@@ -28,7 +30,7 @@ bitrates.each do |quality, bitrate|
                 -hls_time 1
                 -hls_list_size 0
                 -hls_segment_filename #{segment_file}_%03d.ts
-                -hls_key_info_file file.keyinfo
+                -hls_key_info_file #{key_info_file}
                 -r 30
                 -f hls )
   }
