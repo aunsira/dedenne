@@ -1,6 +1,7 @@
 require 'streamio-ffmpeg'
+require 'fileutils'
 
-video = FFMPEG::Movie.new("/Users/aun/Movies/SampleVideo_1280x720_5mb.mp4")
+video = FFMPEG::Movie.new(ARGV[0])
 
 puts video.valid?
 puts "Audio stream :: " + video.audio_stream
@@ -12,13 +13,13 @@ options = {
 }
 
 transcoder_options = { validate: false }
-video.transcode("./files/transcoded.m3u8", options, transcoder_options) do |progress|
+video.transcode(ARGV[1], options, transcoder_options) do |progress|
   puts progress
 end
 
-File.rename './file.key', './files/file.key'
+FileUtils.cp './file.key', './files/file.key'
 
-video = FFMPEG::Movie.new("./files/transcoded.m3u8")
+video = FFMPEG::Movie.new(ARGV[1])
 
 puts "Audio stream :: " + video.audio_stream.to_s
 puts "Video codec :: " + video.video_codec.to_s
