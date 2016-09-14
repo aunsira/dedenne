@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'transcode'
+require './lib/transcode.rb'
 
 Transcoder::transcode(ARGV[0])
