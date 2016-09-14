@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-
-require './lib/transcode.rb'
-
-Transcoder::transcode(ARGV[0])

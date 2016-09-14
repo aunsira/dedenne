@@ -1,7 +1,27 @@
+PATH
+  remote: .
+  specs:
+    dedenne (0.0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
+    diff-lcs (1.2.5)
     multi_json (1.12.1)
+    rake (10.4.2)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.2)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
     streamio-ffmpeg (2.1.0)
       multi_json (~> 1.8)
 
@@ -9,6 +29,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 1.7)
+  dedenne!
+  rake (~> 10.0)
+  rspec
   streamio-ffmpeg
 
 BUNDLED WITH
