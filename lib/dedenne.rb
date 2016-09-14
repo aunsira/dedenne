@@ -1,3 +1,4 @@
+require 'dedenne/version'
 require 'streamio-ffmpeg'
 require 'fileutils'
 
