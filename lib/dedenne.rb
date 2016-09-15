@@ -1,6 +1,7 @@
 require 'dedenne/version'
 require 'streamio-ffmpeg'
 require 'fileutils'
+require 'aws-sdk'
 
 module Dedenne
   def transcode(video)
@@ -44,6 +45,21 @@ module Dedenne
         puts progress
       end
     end
+
+    Aws.config.update({
+      credentials: Aws::Credentials.new(ENV['AWS_KEY_ID'], ENV['AWS_SECRET']),
+      region: 'ap-southeast-1'
+    })
+
+    s3 = Aws::S3::Resource.new
+    files_in_folder = Dir.glob("files/**/*")
+    puts "#{files_in_folder}"
+    files_in_folder.each do |filename|
+      file = File.open(filename)
+      s3.bucket('skilllane-transcoder-test').object("#{filename}").put(file, {body: file} )
+    end
+    puts "Uploaded!"
+
   end
 
   module_function :transcode
