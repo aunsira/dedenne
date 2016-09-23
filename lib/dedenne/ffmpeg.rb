@@ -27,11 +27,11 @@ module Dedenne
 
     def from_mp4_to_hls
       $bitrates.each do |quality, bitrate|
-        FileUtils.cp File.expand_path("/Users/aun/code/git/dedenne/hls_#{quality}.key"), File.expand_path("/Users/aun/code/git/dedenne/files/hls_#{quality}.key")
+        FileUtils.cp File.expand_path("/Users/aun/code/git/dedenne/hls_#{quality}p_.key"), File.expand_path("/Users/aun/code/git/dedenne/files/hls_#{quality}p_.key")
 
-        segment_file = File.expand_path("/Users/aun/code/git/dedenne/files/hls_#{quality}")
+        segment_file = File.expand_path("/Users/aun/code/git/dedenne/files/hls_#{quality}p_")
         output_file = segment_file + ".m3u8"
-        key_info_file = "hls_#{quality}.keyinfo"
+        key_info_file = "hls_#{quality}p_.keyinfo"
 
         options = {
           custom: %W( -b:v #{bitrate}k
@@ -40,7 +40,7 @@ module Dedenne
                     -x264-params keyint=25:no-scenecut=1
                     -hls_time 1
                     -hls_list_size 0
-                    -hls_segment_filename #{segment_file}_%03d.ts
+                    -hls_segment_filename #{segment_file}%03d.ts
                     -hls_key_info_file #{key_info_file}
                     -r 30
                     -maxrate 250k
@@ -52,8 +52,16 @@ module Dedenne
         @video.transcode(output_file, options, transcoder_options) do |progress|
           puts progress
         end
+
+        generate_index_files_for quality
         puts "+++++++++++++ Transcoded ++++++++++++++"
       end
+    end
+
+    def generate_index_files_for quality
+      FileUtils.touch('./files/index.m3u8')
+      File.open("./files/#{quality}p.m3u8", 'w') { |file| file.write("hls_#{quality}p_.m3u8") }
+      File.open("./files/index.m3u8", 'a') { |file| file <<  "hls_#{quality}p_.m3u8\n" }
     end
   end
 end
