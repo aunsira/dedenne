@@ -10,7 +10,8 @@ module Dedenne
   }
 
   class FFMPEGHLS
-    attr_accessor :video
+    attr_accessor :video, :path
+    TRANSCODE_SALT = "3a4a7575f0e31d2c2275"
 
     def initialize(file_video)
       @video = FFMPEG::Movie.new(file_video)
@@ -20,16 +21,21 @@ module Dedenne
       puts "Video codec :: " + @video.video_codec
       puts "Resolution :: " +  @video.resolution
 
-      # Create 'files' folder if not exists
-      transcoded_video_files = File.expand_path("/Users/aun/code/git/dedenne/files/", Dir.pwd)
-      FileUtils.mkdir(transcoded_video_files) unless File.exists? transcoded_video_files
+      course_id = "123"
+      chapter_id = "2"
+      version = "-1"
+      hash = Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{course_id}-#{chapter_id}#{version}")
+
+      # Create 'video' folder if not exists
+      @path = File.expand_path("/Users/aun/code/git/dedenne/video/#{course_id}/#{chapter_id}#{version}/#{hash}/", Dir.pwd)
+      FileUtils.mkdir_p(@path) unless File.exists? @path
     end
 
     def from_mp4_to_hls
       $bitrates.each do |quality, bitrate|
-        FileUtils.cp File.expand_path("/Users/aun/code/git/dedenne/hls_#{quality}p_.key"), File.expand_path("/Users/aun/code/git/dedenne/files/hls_#{quality}p_.key")
+        FileUtils.cp File.expand_path("/Users/aun/code/git/dedenne/hls_#{quality}p_.key"), File.expand_path("#{@path}/hls_#{quality}p_.key")
 
-        segment_file = File.expand_path("/Users/aun/code/git/dedenne/files/hls_#{quality}p_")
+        segment_file = File.expand_path("#{@path}/hls_#{quality}p_")
         output_file = segment_file + ".m3u8"
         key_info_file = "hls_#{quality}p_.keyinfo"
 
@@ -59,9 +65,9 @@ module Dedenne
     end
 
     def generate_index_files_for quality
-      FileUtils.touch('./files/index.m3u8')
-      File.open("./files/#{quality}p.m3u8", 'w') { |file| file.write("hls_#{quality}p_.m3u8") }
-      File.open("./files/index.m3u8", 'a') { |file| file <<  "hls_#{quality}p_.m3u8\n" }
+      FileUtils.touch("#{@path}/index.m3u8")
+      File.open("#{@path}/#{quality}p.m3u8", 'w') { |file| file.write("hls_#{quality}p_.m3u8") }
+      File.open("#{@path}/index.m3u8", 'a') { |file| file <<  "hls_#{quality}p_.m3u8\n" }
     end
   end
 end
