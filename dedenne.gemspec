@@ -22,4 +22,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "streamio-ffmpeg"
   spec.add_development_dependency "aws-sdk"
+  spec.add_development_dependency "sinatra"
 end
