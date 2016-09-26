@@ -4,8 +4,8 @@ require 'fileutils'
 module Dedenne
 
   $bitrates = {
-    480 => '900',
-    720 => '1800',
+    480  => '900',
+    720  => '1800',
     1080 => '3000'
   }
 
@@ -18,13 +18,13 @@ module Dedenne
 
       puts @video.valid?
       puts "Audio stream :: " + @video.audio_stream
-      puts "Video codec :: " + @video.video_codec
-      puts "Resolution :: " +  @video.resolution
+      puts "Video codec  :: " + @video.video_codec
+      puts "Resolution   :: " + @video.resolution
 
-      course_id = "123"
+      course_id  = "123"
       chapter_id = "2"
-      version = "-1"
-      hash = Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{course_id}-#{chapter_id}#{version}")
+      version    = "-1"
+      hash       = Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{course_id}-#{chapter_id}#{version}")
 
       # Create 'video' folder if not exists
       @path = File.expand_path("/Users/aun/code/git/dedenne/video/#{course_id}/#{chapter_id}#{version}/#{hash}/", Dir.pwd)
@@ -35,8 +35,8 @@ module Dedenne
       $bitrates.each do |quality, bitrate|
         FileUtils.cp File.expand_path("/Users/aun/code/git/dedenne/hls_#{quality}p_.key"), File.expand_path("#{@path}/hls_#{quality}p_.key")
 
-        segment_file = File.expand_path("#{@path}/hls_#{quality}p_")
-        output_file = segment_file + ".m3u8"
+        segment_file  = File.expand_path("#{@path}/hls_#{quality}p_")
+        output_file   = segment_file + ".m3u8"
         key_info_file = "hls_#{quality}p_.keyinfo"
 
         options = {
