@@ -41,16 +41,17 @@ module Dedenne
 
         options = {
           custom: %W( -b:v #{bitrate}k
-                    -s 1920x1080
-                    -c:v libx264
-                    -x264-params keyint=25:no-scenecut=1
-                    -hls_time 1
-                    -hls_list_size 0
-                    -hls_segment_filename #{segment_file}%03d.ts
-                    -hls_key_info_file #{key_info_file}
-                    -r 30
-                    -maxrate 250k
-                    -f hls )
+                      -s 1920x1080
+                      -c:v libx264
+                      -x264-params keyint=25:no-scenecut=1
+                      -hls_time 1
+                      -hls_list_size 0
+                      -hls_segment_filename #{segment_file}%03d.ts
+                      -hls_key_info_file #{key_info_file}
+                      -r 30
+                      -maxrate 250k
+                      -b:a 128k
+                      -f hls )
         }
 
         transcoder_options = { validate: false }
