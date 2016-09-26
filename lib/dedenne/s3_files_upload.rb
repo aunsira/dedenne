@@ -12,7 +12,7 @@ module Dedenne
 
     def upload!
       s3 = Aws::S3::Resource.new
-      files_in_folder = Dir.glob("files/**/*")
+      files_in_folder = Dir.glob("video/*/*/*/*")
       puts "#{files_in_folder}"
       files_in_folder.each do |filename|
         file = File.open(filename)
