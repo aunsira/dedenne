@@ -68,8 +68,11 @@ module Dedenne
     end
 
     def generate_index_files_for quality
-      # TODO: Need to initial like index.m3u8
-      File.open("#{@path}/#{quality}p.m3u8", 'w') { |file| file.write("hls_#{quality}p_.m3u8") }
+      File.open("#{@path}/#{quality}p.m3u8", 'w') do |file|
+        file << "#EXTM3U\n"
+        file << %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=431000,RESOLUTION=1280x720,CODECS="avc1.4d0029,mp4a.40.2"\n]
+        file << "hls_#{quality}p_.m3u8"
+      end
       File.open("#{@path}/index.m3u8", 'a') do |file|
         file << %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=431000,RESOLUTION=1280x720,CODECS="avc1.4d0029,mp4a.40.2"\n]
         file <<  "hls_#{quality}p_.m3u8\n"
