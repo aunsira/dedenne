@@ -4,31 +4,33 @@ require 'fileutils'
 module Dedenne
 
   $bitrates = {
-    480  => '900',
-    720  => '1800',
-    1080 => '3000'
+    480  => '900'
+    # 720  => '1800',
+    # 1080 => '3000'
   }
 
   class FFMPEGHLS
     attr_accessor :video, :path
     TRANSCODE_SALT = "3a4a7575f0e31d2c2275"
 
-    def initialize(file_video)
-      @video = FFMPEG::Movie.new(file_video)
+    def initialize(course_id, chapter_id)
+      version ||= '-3'
+      file_video = "/Users/aun/Downloads/video/#{course_id}/#{chapter_id}#{version}.mp4"
+      @video     = FFMPEG::Movie.new(file_video)
 
       puts @video.valid?
       puts "Audio stream :: " + @video.audio_stream
       puts "Video codec  :: " + @video.video_codec
       puts "Resolution   :: " + @video.resolution
 
-      course_id  = "123"
-      chapter_id = "2"
-      version    = "-1"
-      hash       = Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{course_id}-#{chapter_id}#{version}")
+      hash = Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{course_id}-#{chapter_id}#{version}")
 
       # Create 'video' folder if not exists
       @path = File.expand_path("/Users/aun/code/git/dedenne/video/#{course_id}/#{chapter_id}#{version}/#{hash}/", Dir.pwd)
       FileUtils.mkdir_p(@path) unless File.exists? @path
+
+      FileUtils.touch("#{@path}/index.m3u8")
+      File.open("#{@path}/index.m3u8", 'a') { |file| file <<  "#EXTM3U\n" }
     end
 
     def from_mp4_to_hls
@@ -66,9 +68,12 @@ module Dedenne
     end
 
     def generate_index_files_for quality
-      FileUtils.touch("#{@path}/index.m3u8")
+      # TODO: Need to initial like index.m3u8
       File.open("#{@path}/#{quality}p.m3u8", 'w') { |file| file.write("hls_#{quality}p_.m3u8") }
-      File.open("#{@path}/index.m3u8", 'a') { |file| file <<  "hls_#{quality}p_.m3u8\n" }
+      File.open("#{@path}/index.m3u8", 'a') do |file|
+        file << %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=431000,RESOLUTION=1280x720,CODECS="avc1.4d0029,mp4a.40.2"\n]
+        file <<  "hls_#{quality}p_.m3u8\n"
+      end
     end
   end
 end

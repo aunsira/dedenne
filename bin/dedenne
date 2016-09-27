@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'dedenne'
+require './lib/dedenne'
 
-Dedenne::transcode(ARGV[0])
+Dedenne::transcode(ARGV[0], ARGV[1])
