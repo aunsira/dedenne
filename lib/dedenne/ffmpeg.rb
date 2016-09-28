@@ -4,9 +4,9 @@ require 'fileutils'
 module Dedenne
 
   $bitrates = {
-    480  => '900'
-    # 720  => '1800',
-    # 1080 => '3000'
+    480  => '900',
+    720  => '1800',
+    1080 => '3000'
   }
 
   class FFMPEGHLS
@@ -29,7 +29,7 @@ module Dedenne
       FileUtils.mkdir_p(@path) unless File.exists? @path
 
       FileUtils.touch("#{@path}/index.m3u8")
-      File.open("#{@path}/index.m3u8", 'a') { |file| file <<  "#EXTM3U\n" }
+      File.open("#{@path}/index.m3u8", 'a') { |file| file.puts "#EXTM3U" }
     end
 
     def from_mp4_to_hls
@@ -68,13 +68,13 @@ module Dedenne
 
     def generate_index_files_for quality
       File.open("#{@path}/#{quality}p.m3u8", 'w') do |file|
-        file << "#EXTM3U\n"
-        file << %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=431000,RESOLUTION=1280x720,CODECS="avc1.4d0029,mp4a.40.2"\n]
-        file << "hls_#{quality}p_.m3u8"
+        file.puts "#EXTM3U"
+        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=431000,RESOLUTION=1280x720,CODECS="avc1.4d0029,mp4a.40.2"]
+        file.puts "hls_#{quality}p_.m3u8"
       end
       File.open("#{@path}/index.m3u8", 'a') do |file|
-        file << %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=431000,RESOLUTION=1280x720,CODECS="avc1.4d0029,mp4a.40.2"\n]
-        file <<  "hls_#{quality}p_.m3u8\n"
+        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=431000,RESOLUTION=1280x720,CODECS="avc1.4d0029,mp4a.40.2"]
+        file.puts "hls_#{quality}p_.m3u8"
       end
     end
   end

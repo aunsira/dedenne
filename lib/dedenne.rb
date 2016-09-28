@@ -11,7 +11,7 @@ module Dedenne
     ffmpeg = FFMPEGHLS.new(course_id, chapter_id, video_version)
     ffmpeg.from_mp4_to_hls
 
-    uploader.upload!
+    uploader.upload!(course_id, chapter_id, video_version)
   end
 
   module_function :transcode
