@@ -61,19 +61,19 @@ module Dedenne
           puts progress
         end
 
-        generate_index_files_for quality
+        generate_index_files_for quality, bitrate
         puts "+++++++++++++ Transcoded ++++++++++++++"
       end
     end
 
-    def generate_index_files_for quality
+    def generate_index_files_for quality, bitrate
       File.open("#{@path}/#{quality}p.m3u8", 'w') do |file|
         file.puts "#EXTM3U"
-        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=431000,RESOLUTION=1280x720,CODECS="avc1.4d0029,mp4a.40.2"]
+        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate},RESOLUTION=1920x1080,CODECS="avc1.4d0029,mp4a.40.2"]
         file.puts "hls_#{quality}p_.m3u8"
       end
       File.open("#{@path}/index.m3u8", 'a') do |file|
-        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=431000,RESOLUTION=1280x720,CODECS="avc1.4d0029,mp4a.40.2"]
+        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate},RESOLUTION=1920x1080,CODECS="avc1.4d0029,mp4a.40.2"]
         file.puts "hls_#{quality}p_.m3u8"
       end
     end
