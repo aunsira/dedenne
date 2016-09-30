@@ -1,3 +1,4 @@
+require 'etc'
 require 'streamio-ffmpeg'
 require 'fileutils'
 
@@ -12,9 +13,10 @@ module Dedenne
   class FFMPEGHLS
     attr_accessor :video, :path
     TRANSCODE_SALT = "3a4a7575f0e31d2c2275"
+    HOME_PATH = Etc.getpwuid.dir
 
     def initialize(course_id, chapter_id, video_version)
-      file_video = "/Users/aun/Downloads/video/#{course_id}/#{chapter_id}#{video_version}.mp4"
+      file_video = HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}.mp4"
       @video     = FFMPEG::Movie.new(file_video)
 
       puts @video.valid?
@@ -25,7 +27,7 @@ module Dedenne
       hash = Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{course_id}-#{chapter_id}#{video_version}")
 
       # Create 'video' folder if not exists
-      @path = File.expand_path("/Users/aun/code/git/dedenne/video/#{course_id}/#{chapter_id}#{video_version}/#{hash}/", Dir.pwd)
+      @path = File.expand_path(HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}/#{hash}/", Dir.pwd)
       FileUtils.mkdir_p(@path) unless File.exists? @path
 
       FileUtils.touch("#{@path}/index.m3u8")
@@ -34,7 +36,7 @@ module Dedenne
 
     def from_mp4_to_hls
       $bitrates.each do |quality, bitrate|
-        FileUtils.cp File.expand_path("/Users/aun/code/git/dedenne/hls_#{quality}p_.key"), File.expand_path("#{@path}/hls_#{quality}p_.key")
+        FileUtils.cp File.expand_path(HOME_PATH + "/code/git/dedenne/hls_#{quality}p_.key"), File.expand_path("#{@path}/hls_#{quality}p_.key")
 
         segment_file  = File.expand_path("#{@path}/hls_#{quality}p_")
         output_file   = segment_file + ".m3u8"
