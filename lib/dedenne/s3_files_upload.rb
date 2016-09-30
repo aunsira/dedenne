@@ -23,7 +23,7 @@ module Dedenne
       puts "#{files_in_folder}"
       files_in_folder.each do |filename|
         file = File.open(filename)
-        s3.bucket('skilllane-transcoder-test').object("#{filename}").put(file, {body: file, acl: "public-read"} )
+        s3.bucket('skilllane-transcoder-test').object("#{filename.gsub(HOME_PATH + "/", "")}").put(file, {body: file, acl: "public-read"} )
       end
 
       url = "#{ENV['SKL_HOST']}/api/transcoder/update_transcode_status.json?chapter_id=#{chapter_id}"

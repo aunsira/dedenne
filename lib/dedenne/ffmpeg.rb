@@ -30,6 +30,9 @@ module Dedenne
       @path = File.expand_path(HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}/#{hash}/", Dir.pwd)
       FileUtils.mkdir_p(@path) unless File.exists? @path
 
+      # Initial video keys
+      system "./initkey.sh"
+
       FileUtils.touch("#{@path}/index.m3u8")
       File.open("#{@path}/index.m3u8", 'a') { |file| file.puts "#EXTM3U" }
     end
