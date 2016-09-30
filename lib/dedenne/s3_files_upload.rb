@@ -23,6 +23,10 @@ module Dedenne
         file = File.open(filename)
         s3.bucket('skilllane-transcoder-test').object("#{filename}").put(file, {body: file, acl: "public-read"} )
       end
+
+      url = "http://localhost:3001/api/recruit/info.json?chapter_id=#{chapter_id}"
+      uri = URI(url)
+      Net::HTTP.get(uri)
       puts "Uploaded!"
     end
 
