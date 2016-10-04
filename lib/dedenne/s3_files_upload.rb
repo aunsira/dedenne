@@ -29,10 +29,11 @@ module Dedenne
       url = "#{ENV['SKL_HOST']}/api/transcoder/update_transcode_status.json?chapter_id=#{chapter_id}"
       uri = URI(url)
       Net::HTTP.get(uri)
-      puts "Uploaded!"
+      puts "============== Uploaded! ==============="
 
       # Remove local video files
       FileUtils.rm_rf(HOME_PATH + "/video/#{course_id}/") if File.exists?(HOME_PATH + "/video/#{course_id}/")
+      puts "============== Removed local video files =================="
     end
 
     def get_video_file(course_id, chapter_id, video_version)
