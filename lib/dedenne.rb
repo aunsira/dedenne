@@ -1,5 +1,5 @@
-require './lib/dedenne/s3_files_upload'
-require './lib/dedenne/ffmpeg'
+require_relative 'dedenne/s3_files_upload'
+require_relative 'dedenne/ffmpeg'
 require 'streamio-ffmpeg'
 require 'fileutils'
 
