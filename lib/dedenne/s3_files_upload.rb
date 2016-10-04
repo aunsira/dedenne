@@ -32,7 +32,7 @@ module Dedenne
       puts "Uploaded!"
 
       # Remove local video files
-      FileUtils.rm_rf(HOME_PATH + "/video/#{course_id}/*") if File.exists?(HOME_PATH + "/video/#{course_id}/*")
+      FileUtils.rm_rf(HOME_PATH + "/video/#{course_id}/") if File.exists?(HOME_PATH + "/video/#{course_id}/")
     end
 
     def get_video_file(course_id, chapter_id, video_version)
