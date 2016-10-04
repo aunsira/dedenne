@@ -21,4 +21,4 @@ You can also call via API url with `http://localhost:4567/transcode/course/:cour
 ## Docker stuff
 
     $ docker build -t dedenne .
-    $ docker run -d -t -p 4567:4567 -e SKL_HOST=<SKL_NAME> -e AWS_KEY_ID=<AWS_KEY> -e AWS_SECRET=<AWS_SECRET_KEY> --name dedenne_local dedenne
+    $ docker run -d -t -p 4567:4567 -e SKL_HOST=<SKL_NAME> -e AWS_KEY_ID=<AWS_KEY> -e AWS_SECRET=<AWS_SECRET_KEY> -e S3_VIDEO_BUCKET=<S3_VIDEO_BUCKET> -e S3_VIDEO_TRANSCODED_BUCKET=<S3_VIDEO_TRANSCODED_BUCKET> --name dedenne_local dedenne
