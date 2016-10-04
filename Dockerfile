@@ -20,4 +20,4 @@ RUN bundle install
 COPY . $APP_HOME
 
 EXPOSE 4567
-CMD ["ruby", "bin/app.rb", "-p", "4567"]
+CMD ["ruby", "app.rb"]
