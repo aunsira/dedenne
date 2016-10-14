@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'resque'
 require_relative 'lib/dedenne'
-require_relative 'lib/dedenne/params_queue'
+require_relative 'lib/dedenne/transcoder_queue'
 
 set :bind, '0.0.0.0'
 
