@@ -1,0 +1,3 @@
+FROM redis:3.0.3
+EXPOSE 6379
+CMD ["redis-server"]

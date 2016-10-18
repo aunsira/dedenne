@@ -20,4 +20,4 @@ RUN bundle install
 COPY . $APP_HOME
 
 EXPOSE 4567
-CMD ["ruby", "app.rb"]
+CMD ["foreman", "start"]
