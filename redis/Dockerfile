@@ -1,3 +1,2 @@
-FROM redis:3.0.3
-EXPOSE 6379
+FROM redis:3.2-alpine
 CMD ["redis-server"]
