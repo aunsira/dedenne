@@ -8,7 +8,7 @@ Clone this repository and run
 
     $ bundle install
 
-You need to export `AWS_KEY_ID` and `AWS_SECRET` if you need to upload to Amazon S3.
+You need to export `AWS_S3_ACCESS_KEY_ID` and `AWS_S3_SECRET_ACCESS_KEY` if you need to upload to Amazon S3.
 
 ## Usage
 
@@ -21,4 +21,4 @@ You can also call via API url with `http://localhost:4567/transcode/course/:cour
 ## Docker stuff
 
     $ docker build -t dedenne .
-    $ docker run -d -t -p 4567:4567 -e SKL_HOST=<SKL_NAME> -e AWS_KEY_ID=<AWS_KEY> -e AWS_SECRET=<AWS_SECRET_KEY> -e S3_VIDEO_BUCKET=<S3_VIDEO_BUCKET> -e S3_VIDEO_TRANSCODED_BUCKET=<S3_VIDEO_TRANSCODED_BUCKET> --name dedenne_local dedenne
+    $ docker run -d -t -p 4567:4567 -e SKL_HOST=<SKL_NAME> -e AWS_S3_ACCESS_KEY_ID=<AWS_KEY> -e AWS_S3_SECRET_ACCESS_KEY=<AWS_SECRET_KEY> -e AWS_S3_UPLOADS_BUCKET=<AWS_S3_UPLOADS_BUCKET> -e AWS_S3_VIDEO_TRANSCODED_BUCKET=<AWS_S3_VIDEO_TRANSCODED_BUCKET> --name dedenne_local --link redis:redis dedenne
