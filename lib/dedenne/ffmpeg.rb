@@ -62,9 +62,7 @@ module Dedenne
 
         transcoder_options = { validate: false }
         puts "+++++++++ Start transcoding +++++++++++++"
-        @video.transcode(output_file, options, transcoder_options) do |progress|
-          puts progress
-        end
+        @video.transcode(output_file, options, transcoder_options)
 
         generate_index_files_for quality, bitrate
         puts "+++++++++++++ Transcoded ++++++++++++++"
