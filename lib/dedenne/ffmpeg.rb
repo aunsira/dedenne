@@ -54,6 +54,8 @@ module Dedenne
                       -hls_list_size 0
                       -hls_segment_filename #{segment_file}%03d.ts
                       -hls_key_info_file #{key_info_file}
+                      -hls_allow_cache 1
+                      -segment_list_flags 'cache'
                       -r 30
                       -maxrate 250k
                       -b:a 128k
