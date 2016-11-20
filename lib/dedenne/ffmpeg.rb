@@ -47,7 +47,7 @@ module Dedenne
 
         options = {
           custom: %W( -b:v #{bitrate}k
-                      -s 1920x1080
+                      -s #{@video.resolution}
                       -c:v libx264
                       -x264-params keyint=25:no-scenecut=1
                       -hls_time 1
