@@ -66,19 +66,19 @@ module Dedenne
         puts "+++++++++ Start transcoding +++++++++++++"
         @video.transcode(output_file, options, transcoder_options)
 
-        generate_index_files_for quality, bitrate
+        generate_index_files_for quality, bitrate, @video.resolution
         puts "+++++++++++++ Transcoded ++++++++++++++"
       end
     end
 
-    def generate_index_files_for quality, bitrate
+    def generate_index_files_for quality, bitrate, resolution
       File.open("#{@path}/#{quality}p.m3u8", 'w') do |file|
         file.puts "#EXTM3U"
-        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate.to_i * 1024},RESOLUTION=1920x1080,CODECS="avc1.4d0029,mp4a.40.2"]
+        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate.to_i * 1024},RESOLUTION=#{resolution},CODECS="avc1.4d0029,mp4a.40.2"]
         file.puts "hls_#{quality}p_.m3u8"
       end
       File.open("#{@path}/index.m3u8", 'a') do |file|
-        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate.to_i * 1024},RESOLUTION=1920x1080,CODECS="avc1.4d0029,mp4a.40.2"]
+        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate.to_i * 1024},RESOLUTION=#{resolution},CODECS="avc1.4d0029,mp4a.40.2"]
         file.puts "hls_#{quality}p_.m3u8"
       end
     end
