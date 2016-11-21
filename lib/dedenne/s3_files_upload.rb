@@ -20,7 +20,6 @@ module Dedenne
       hash = Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{course_id}-#{chapter_id}#{video_version}")
 
       files_in_folder = Dir.glob(HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}/#{hash}/*")
-      puts "#{files_in_folder}"
       files_in_folder.each do |filename|
         file = File.open(filename)
         s3.bucket(ENV["AWS_S3_VIDEO_TRANSCODED_BUCKET"]).object("#{filename.gsub(HOME_PATH + "/", "")}").put(file, {body: file, acl: "public-read"} )
