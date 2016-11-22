@@ -49,6 +49,7 @@ module Dedenne
           custom: %W( -b:v #{bitrate}k
                       -s 1920x1080
                       -c:v libx264
+                      -presets fast
                       -x264-params keyint=25:no-scenecut=1
                       -hls_time 1
                       -hls_list_size 0
