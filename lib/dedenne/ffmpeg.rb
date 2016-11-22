@@ -47,7 +47,7 @@ module Dedenne
 
         options = {
           custom: %W( -b:v #{bitrate}k
-                      -s 1920x1080
+                      -s #{@video.resolution}
                       -c:v libx264
                       -presets fast
                       -x264-params keyint=25:no-scenecut=1
@@ -55,6 +55,8 @@ module Dedenne
                       -hls_list_size 0
                       -hls_segment_filename #{segment_file}%03d.ts
                       -hls_key_info_file #{key_info_file}
+                      -hls_allow_cache 1
+                      -segment_list_flags 'cache'
                       -r 30
                       -maxrate 250k
                       -b:a 128k
@@ -63,23 +65,21 @@ module Dedenne
 
         transcoder_options = { validate: false }
         puts "+++++++++ Start transcoding +++++++++++++"
-        @video.transcode(output_file, options, transcoder_options) do |progress|
-          puts progress
-        end
+        @video.transcode(output_file, options, transcoder_options)
 
-        generate_index_files_for quality, bitrate
+        generate_index_files_for quality, bitrate, @video.resolution
         puts "+++++++++++++ Transcoded ++++++++++++++"
       end
     end
 
-    def generate_index_files_for quality, bitrate
+    def generate_index_files_for quality, bitrate, resolution
       File.open("#{@path}/#{quality}p.m3u8", 'w') do |file|
         file.puts "#EXTM3U"
-        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate.to_i * 1024},RESOLUTION=1920x1080,CODECS="avc1.4d0029,mp4a.40.2"]
+        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate.to_i * 1024},RESOLUTION=#{resolution},CODECS="avc1.4d0029,mp4a.40.2"]
         file.puts "hls_#{quality}p_.m3u8"
       end
       File.open("#{@path}/index.m3u8", 'a') do |file|
-        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate.to_i * 1024},RESOLUTION=1920x1080,CODECS="avc1.4d0029,mp4a.40.2"]
+        file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate.to_i * 1024},RESOLUTION=#{resolution},CODECS="avc1.4d0029,mp4a.40.2"]
         file.puts "hls_#{quality}p_.m3u8"
       end
     end

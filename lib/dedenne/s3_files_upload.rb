@@ -20,7 +20,6 @@ module Dedenne
       hash = Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{course_id}-#{chapter_id}#{video_version}")
 
       files_in_folder = Dir.glob(HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}/#{hash}/*")
-      puts "#{files_in_folder}"
       files_in_folder.each do |filename|
         file = File.open(filename)
         s3.bucket(ENV["AWS_S3_VIDEO_TRANSCODED_BUCKET"]).object("#{filename.gsub(HOME_PATH + "/", "")}").put(file, {body: file, acl: "public-read"} )
@@ -29,7 +28,7 @@ module Dedenne
       url = "#{ENV['SKL_HOST']}/api/transcoder/update_transcode_status.json?chapter_id=#{chapter_id}"
       uri = URI(url)
       Net::HTTP.get(uri)
-      puts "============== Uploaded! ==============="
+      puts "============== Transcoded video files of course: #{course_id} have been uploaded ==============="
 
       # Remove local video files
       FileUtils.rm_rf(HOME_PATH + "/video/#{course_id}/") if File.exists?(HOME_PATH + "/video/#{course_id}/")
