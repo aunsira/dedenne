@@ -1,8 +1,5 @@
 require 'spec_helper'
-require 'streamio-ffmpeg'
 require 'dedenne/ffmpeg'
-require 'fileutils'
-
 
 describe Dedenne::FFMPEGHLS do
   course_id = "1"
