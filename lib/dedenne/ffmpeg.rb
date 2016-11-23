@@ -1,6 +1,7 @@
+require 'digest/sha1'
 require 'etc'
-require 'streamio-ffmpeg'
 require 'fileutils'
+require 'streamio-ffmpeg'
 
 module Dedenne
 
@@ -11,11 +12,15 @@ module Dedenne
   }
 
   class FFMPEGHLS
-    attr_accessor :video, :path
+    attr_accessor :video, :path, :course_id, :chapter_id, :video_version
     TRANSCODE_SALT = "3a4a7575f0e31d2c2275"
     HOME_PATH = Etc.getpwuid.dir
 
     def initialize(course_id, chapter_id, video_version)
+      @course_id     =  course_id
+      @chapter_id    =  chapter_id
+      @video_version =  video_version
+
       file_video = HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}.mp4"
       @video     = FFMPEG::Movie.new(file_video)
 
@@ -23,8 +28,6 @@ module Dedenne
       puts "Audio stream :: " + @video.audio_stream
       puts "Video codec  :: " + @video.video_codec
       puts "Resolution   :: " + @video.resolution
-
-      hash = Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{course_id}-#{chapter_id}#{video_version}")
 
       # Create 'video' folder if not exists
       @path = File.expand_path(HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}/#{hash}/", Dir.pwd)
@@ -82,6 +85,10 @@ module Dedenne
         file.puts %Q[#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=#{bitrate.to_i * 1024},RESOLUTION=#{resolution},CODECS="avc1.4d0029,mp4a.40.2"]
         file.puts "hls_#{quality}p_.m3u8"
       end
+    end
+
+    def hash
+      Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{@course_id}-#{@chapter_id}#{@video_version}")
     end
   end
 end
