@@ -16,6 +16,13 @@ describe Dedenne::FFMPEGHLS do
       allow(FFMPEG::Movie).to receive(:new).and_return(video)
       Dedenne::FFMPEGHLS.new(course_id, chapter_id, video_version)
     end
+
+    it 'should run generate keys script' do
+      allow(FFMPEG::Movie).to receive(:new).and_return(video)
+      ffmpeg = Dedenne::FFMPEGHLS.new(course_id, chapter_id, video_version)
+      expect(ffmpeg).to receive(:system).with('./initkey.sh')
+      ffmpeg.generate_key_files
+    end
   end
 
   describe 'hashing' do
