@@ -98,7 +98,7 @@ module Dedenne
       uri  =  URI.parse("#{ENV['HOST']}")
       http =  Net::HTTP.new(uri.host)
       http.send_request('PATCH',
-                        "/api/transcoder/chapters/@chapter_id/video_duration/@video.duration")
+                        "/api/transcoder/chapters/#{@chapter_id}/video_duration/#{@video.duration}")
     end
   end
 end
