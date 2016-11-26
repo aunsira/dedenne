@@ -43,9 +43,10 @@ module Dedenne
     end
 
     def update_transcode_status!(chapter_id)
-      uri  =  URI.parse("#{ENV['HOST']}")
-      http =  Net::HTTP.new(uri.host)
-      http.send_request('PATCH', "/api/transcoder/chapters/#{chapter_id}/complete")
+      uri           =  URI.parse("#{ENV['HOST']}")
+      https         =  Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl =  true
+      https.send_request('PATCH', "/api/transcoder/chapters/#{chapter_id}/complete")
     end
   end
 end

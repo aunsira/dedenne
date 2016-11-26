@@ -95,9 +95,10 @@ module Dedenne
     end
 
     def update_video_duration!
-      uri  =  URI.parse("#{ENV['HOST']}")
-      http =  Net::HTTP.new(uri.host)
-      http.send_request('PATCH',
+      uri           =  URI.parse("#{ENV['HOST']}")
+      https         =  Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl =  true
+      https.send_request('PATCH',
                         "/api/transcoder/chapters/#{@chapter_id}/video_duration/#{@video.duration}")
     end
   end
