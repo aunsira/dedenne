@@ -25,9 +25,8 @@ module Dedenne
         s3.bucket(ENV["AWS_S3_VIDEO_TRANSCODED_BUCKET"]).object("#{filename.gsub(HOME_PATH + "/", "")}").put(file, {body: file, acl: "public-read"} )
       end
 
-      url = "#{ENV['SKL_HOST']}/api/transcoder/update_transcode_status.json?chapter_id=#{chapter_id}"
-      uri = URI(url)
-      Net::HTTP.get(uri)
+      update_transcode_status! chapter_id
+
       puts "============== Transcoded video files of course: #{course_id}, chapter_id: #{chapter_id} have been uploaded ==============="
 
       # Remove local video files
@@ -43,5 +42,11 @@ module Dedenne
       s3_obj = s3.bucket(ENV["AWS_S3_UPLOADS_BUCKET"]).object("#{path}").get(response_target: "#{download_path}#{chapter_id}#{video_version}.mp4")
     end
 
+    def update_transcode_status!(chapter_id)
+      uri           =  URI.parse("#{ENV['HOST']}")
+      https         =  Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl =  true
+      https.send_request('PATCH', "/api/transcoder/chapters/#{chapter_id}/complete")
+    end
   end
 end

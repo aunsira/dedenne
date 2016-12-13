@@ -25,7 +25,7 @@ You can also call via API url with `http://localhost:4567/transcode/course/:cour
     $ docker run --name redis -p 6379:6379 -d foo/redis
     $ cd ..
     $ docker build -t dedenne .
-    $ docker run -d -t -p 4567:4567 -e SKL_HOST=<SKL_NAME> -e AWS_S3_ACCESS_KEY_ID=<AWS_KEY> -e AWS_S3_SECRET_ACCESS_KEY=<AWS_SECRET_KEY> -e AWS_S3_UPLOADS_BUCKET=<AWS_S3_UPLOADS_BUCKET> -e AWS_S3_VIDEO_TRANSCODED_BUCKET=<AWS_S3_VIDEO_TRANSCODED_BUCKET> --name dedenne_local --link redis:redis dedenne
+    $ docker run -d -t -p 4567:4567 -e HOST=<SKL_HOST_NAME> -e AWS_S3_ACCESS_KEY_ID=<AWS_KEY> -e AWS_S3_SECRET_ACCESS_KEY=<AWS_SECRET_KEY> -e AWS_S3_UPLOADS_BUCKET=<AWS_S3_UPLOADS_BUCKET> -e AWS_S3_VIDEO_TRANSCODED_BUCKET=<AWS_S3_VIDEO_TRANSCODED_BUCKET> --name dedenne_local --link redis:redis dedenne
 
 A bit more easier with `docker-compose`
 

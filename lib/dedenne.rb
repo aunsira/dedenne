@@ -10,6 +10,7 @@ module Dedenne
 
     ffmpeg = FFMPEGHLS.new(course_id, chapter_id, video_version)
     ffmpeg.from_mp4_to_hls
+    ffmpeg.update_video_duration!
 
     uploader.upload!(course_id, chapter_id, video_version)
   end

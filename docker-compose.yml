@@ -12,7 +12,7 @@ dedenne:
   ports:
     - "4567:4567"
   environment:
-    SKL_HOST: https://www.skilllane.com
+    HOST: https://www.skilllane.com
     AWS_S3_ACCESS_KEY_ID: ${AWS_S3_ACCESS_KEY_ID}
     AWS_S3_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
     AWS_S3_UPLOADS_BUCKET: skilllane

@@ -94,8 +94,12 @@ module Dedenne
       Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{@course_id}-#{@chapter_id}#{@video_version}")
     end
 
-    def video_duration
-      @video.duration
+    def update_video_duration!
+      uri           =  URI.parse("#{ENV['HOST']}")
+      https         =  Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl =  true
+      https.send_request('PATCH',
+                        "/api/transcoder/chapters/#{@chapter_id}/video_duration/#{@video.duration}")
     end
   end
 end
