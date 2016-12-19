@@ -8,11 +8,16 @@ module Dedenne
     TRANSCODE_SALT = "3a4a7575f0e31d2c2275"
     HOME_PATH = Etc.getpwuid.dir
 
-    def initialize()
+    attr_accessor :upload_bucket, :transcoded_bucket
+
+    def initialize(upload_bucket, transcoded_bucket)
       Aws.config.update({
         credentials: Aws::Credentials.new(ENV['AWS_S3_ACCESS_KEY_ID'], ENV['AWS_S3_SECRET_ACCESS_KEY']),
         region: 'ap-southeast-1'
       })
+
+      @upload_bucket     =  upload_bucket
+      @transcoded_bucket =  transcoded_bucket
     end
 
     def upload!(course_id, chapter_id, video_version)
@@ -22,7 +27,7 @@ module Dedenne
       files_in_folder = Dir.glob(HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}/#{hash}/*")
       files_in_folder.each do |filename|
         file = File.open(filename)
-        s3.bucket(ENV["AWS_S3_VIDEO_TRANSCODED_BUCKET"]).object("#{filename.gsub(HOME_PATH + "/", "")}").put(file, {body: file, acl: "public-read"} )
+        s3.bucket(@transcoded_bucket).object("#{filename.gsub(HOME_PATH + "/", "")}").put(file, {body: file, acl: "public-read"} )
       end
 
       update_transcode_status! chapter_id
@@ -39,7 +44,7 @@ module Dedenne
       path = "video/#{course_id}/#{chapter_id}#{video_version}.mp4"
       download_path = HOME_PATH + "/video/#{course_id}/"
       FileUtils.mkdir_p(download_path) unless File.exists? download_path
-      s3_obj = s3.bucket(ENV["AWS_S3_UPLOADS_BUCKET"]).object("#{path}").get(response_target: "#{download_path}#{chapter_id}#{video_version}.mp4")
+      s3_obj = s3.bucket(@upload_bucket).object("#{path}").get(response_target: "#{download_path}#{chapter_id}#{video_version}.mp4")
     end
 
     def update_transcode_status!(chapter_id)

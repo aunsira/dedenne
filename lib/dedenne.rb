@@ -4,8 +4,8 @@ require 'streamio-ffmpeg'
 require 'fileutils'
 
 module Dedenne
-  def transcode(course_id, chapter_id, video_version)
-    uploader = S3FilesUpload.new()
+  def transcode(course_id, chapter_id, video_version, upload_bucket, transcoded_bucket)
+    uploader = S3FilesUpload.new(upload_bucket, transcoded_bucket)
     uploader.get_video_file(course_id, chapter_id, video_version)
 
     ffmpeg = FFMPEGHLS.new(course_id, chapter_id, video_version)
