@@ -94,8 +94,8 @@ module Dedenne
       Digest::SHA1.hexdigest("#{TRANSCODE_SALT}-#{@course_id}-#{@chapter_id}#{@video_version}")
     end
 
-    def update_video_duration!
-      uri           =  URI.parse("#{ENV['HOST']}")
+    def update_video_duration!(host)
+      uri           =  URI.parse(host)
       https         =  Net::HTTP.new(uri.host, uri.port)
       https.use_ssl =  true
       https.send_request('PATCH',

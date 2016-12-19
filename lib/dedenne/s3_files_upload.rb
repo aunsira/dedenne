@@ -8,9 +8,9 @@ module Dedenne
     TRANSCODE_SALT = "3a4a7575f0e31d2c2275"
     HOME_PATH = Etc.getpwuid.dir
 
-    attr_accessor :upload_bucket, :transcoded_bucket
+    attr_accessor :upload_bucket, :transcoded_bucket, :host
 
-    def initialize(upload_bucket, transcoded_bucket)
+    def initialize(upload_bucket, transcoded_bucket, host)
       Aws.config.update({
         credentials: Aws::Credentials.new(ENV['AWS_S3_ACCESS_KEY_ID'], ENV['AWS_S3_SECRET_ACCESS_KEY']),
         region: 'ap-southeast-1'
@@ -18,6 +18,7 @@ module Dedenne
 
       @upload_bucket     =  upload_bucket
       @transcoded_bucket =  transcoded_bucket
+      @host = host
     end
 
     def upload!(course_id, chapter_id, video_version)
@@ -48,7 +49,7 @@ module Dedenne
     end
 
     def update_transcode_status!(chapter_id)
-      uri           =  URI.parse("#{ENV['HOST']}")
+      uri           =  URI.parse(@host)
       https         =  Net::HTTP.new(uri.host, uri.port)
       https.use_ssl =  true
       https.send_request('PATCH', "/api/transcoder/chapters/#{chapter_id}/complete")
