@@ -7,6 +7,10 @@ module Dedenne
   class S3FilesUpload
     TRANSCODE_SALT = "3a4a7575f0e31d2c2275"
     HOME_PATH = Etc.getpwuid.dir
+    STATUS = {
+      complete: 'complete',
+      error: 'error'
+    }
 
     attr_accessor :upload_bucket, :transcoded_bucket, :host
 
@@ -31,7 +35,7 @@ module Dedenne
         s3.bucket(@transcoded_bucket).object("#{filename.gsub(HOME_PATH + "/", "")}").put(file, {body: file, acl: "public-read"} )
       end
 
-      update_transcode_status! chapter_id
+      update_transcode_status!(chapter_id, STATUS[:complete])
 
       puts "============== Transcoded video files of course: #{course_id}, chapter_id: #{chapter_id} have been uploaded ==============="
 
@@ -46,13 +50,15 @@ module Dedenne
       download_path = HOME_PATH + "/video/#{course_id}/"
       FileUtils.mkdir_p(download_path) unless File.exists? download_path
       s3_obj = s3.bucket(@upload_bucket).object("#{path}").get(response_target: "#{download_path}#{chapter_id}#{video_version}.mp4")
+    rescue Aws::S3::Errors::NoSuchKey
+      update_transcode_status!(chapter_id, STATUS[:error])
     end
 
-    def update_transcode_status!(chapter_id)
+    def update_transcode_status!(chapter_id, status)
       uri           =  URI.parse(@host)
       https         =  Net::HTTP.new(uri.host, uri.port)
       https.use_ssl =  true
-      https.send_request('PATCH', "/api/transcoder/chapters/#{chapter_id}/complete")
+      https.send_request('PATCH', "/api/transcoder/chapters/#{chapter_id}/status/#{status}")
     end
   end
 end
