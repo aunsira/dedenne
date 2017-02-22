@@ -8,8 +8,8 @@ module Dedenne
     TRANSCODE_SALT = "3a4a7575f0e31d2c2275"
     HOME_PATH = Etc.getpwuid.dir
     STATUS = {
-      complete: 'complete',
-      error: 'error'
+      complete: 'Complete',
+      error: 'Error'
     }
 
     attr_accessor :upload_bucket, :transcoded_bucket, :host
