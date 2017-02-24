@@ -22,7 +22,11 @@ module Dedenne
       @video_version =  video_version
 
       file_video = HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}.mp4"
-      @video     = FFMPEG::Movie.new(file_video)
+      begin
+        @video     = FFMPEG::Movie.new(file_video)
+      rescue Errno::ENOENT
+        update_transcode_status!(chapter_id, 'Error')
+      end
 
       puts @video.valid?
       puts "Audio stream :: " + @video.audio_stream
@@ -100,6 +104,13 @@ module Dedenne
       https.use_ssl =  true
       https.send_request('PATCH',
                         "/api/transcoder/chapters/#{@chapter_id}/video_duration/#{@video.duration}")
+    end
+
+    def update_transcode_status!(chapter_id, status)
+      uri           =  URI.parse(@host)
+      https         =  Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl =  true
+      https.send_request('PATCH', "/api/transcoder/chapters/#{chapter_id}/status/#{status}")
     end
   end
 end
