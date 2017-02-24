@@ -25,6 +25,7 @@ module Dedenne
       begin
         @video     = FFMPEG::Movie.new(file_video)
       rescue Errno::ENOENT
+        return
       end
 
       puts @video.valid?
