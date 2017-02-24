@@ -22,11 +22,7 @@ module Dedenne
       @video_version =  video_version
 
       file_video = HOME_PATH + "/video/#{course_id}/#{chapter_id}#{video_version}.mp4"
-      begin
-        @video     = FFMPEG::Movie.new(file_video)
-      rescue Errno::ENOENT
-        return
-      end
+      @video     = FFMPEG::Movie.new(file_video)
 
       puts @video.valid?
       puts "Audio stream :: " + @video.audio_stream
