@@ -40,6 +40,7 @@ module Dedenne
     end
 
     def from_mp4_to_hls
+      threads = []
       $bitrates.each do |quality, bitrate|
         FileUtils.cp File.expand_path(HOME_PATH + "/code/git/dedenne/hls_#{quality}p_.key"), File.expand_path("#{@path}/hls_#{quality}p_.key")
 
@@ -66,11 +67,14 @@ module Dedenne
         }
 
         transcoder_options = { validate: false }
-        puts "+++++++++ Start transcoding +++++++++++++"
-        @video.transcode(output_file, options, transcoder_options)
+        threads << Thread.new do
+          @video.transcode(output_file, options, transcoder_options)
+          generate_index_files_for quality, bitrate, @video.resolution
+        end
+      end
 
-        generate_index_files_for quality, bitrate, @video.resolution
-        puts "+++++++++++++ Transcoded ++++++++++++++"
+      threads.each do |thread|
+        thread.join
       end
     end
 
