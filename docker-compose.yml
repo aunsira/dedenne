@@ -3,7 +3,6 @@ redis:
   container_name: redis_local
   ports:
     - "6379:6379"
-  restart: on-failure:10
   command: redis-server
 
 dedenne:
@@ -16,5 +15,4 @@ dedenne:
     AWS_S3_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
   links:
     - redis
-  restart: on-failure:10
   command: foreman start
