@@ -13,6 +13,7 @@ dedenne:
   environment:
     AWS_S3_ACCESS_KEY_ID: ${AWS_S3_ACCESS_KEY_ID}
     AWS_S3_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
+    REDIS_PASSWORD: ${REDIS_PASSWORD}
   links:
     - redis
   command: foreman start
