@@ -3,7 +3,7 @@ redis:
   container_name: redis_local
   ports:
     - "6379:6379"
-  command: redis-server
+  command: redis-server --requirepass ${REDIS_PASSWORD}
 
 dedenne:
   build: .
