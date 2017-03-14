@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'resque'
+require 'redis'
 require_relative 'lib/dedenne'
 require_relative 'lib/dedenne/transcoder_queue'
 require_relative 'config/resque'
@@ -14,6 +15,6 @@ get '/transcode/course/:course_id/chapter/:chapter_id' do
   video_version = params['version'].empty? ? "" : "-#{params['version']}"
   host = params['host']
 
-  Resque.redis = Config.redis_url || Config.local_redis
+  Resque.redis = Redis.new(url: Config.redis_url) || Config.local_redis
   Resque.enqueue(TranscoderQueue, course_id, chapter_id, video_version, upload_bucket, transcoded_bucket, host)
 end

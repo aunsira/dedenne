@@ -1,7 +1,7 @@
 class Config
   def self.redis_url
-    if ENV['REDIS_PORT_6379_TCP_ADDR'] && ENV['REDIS_PORT_6379_TCP_PORT']
-      return ENV['REDIS_PORT_6379_TCP_ADDR'] + ":" + ENV['REDIS_PORT_6379_TCP_PORT']
+    if ENV['REDIS_PORT_6379_TCP_ADDR'] && ENV['REDIS_PORT_6379_TCP_PORT'] && ENV['REDIS_PASSWORD']
+      return "redis://:#{ENV['REDIS_PASSWORD']}@#{ENV['REDIS_PORT_6379_TCP_ADDR']}:#{ENV['REDIS_PORT_6379_TCP_PORT']}"
     end
   end
 
