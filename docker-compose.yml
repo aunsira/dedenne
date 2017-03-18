@@ -1,5 +1,5 @@
 redis:
-  image: redis:3.2-alpine
+  image: redis
   container_name: redis_local
   ports:
     - "6379:6379"

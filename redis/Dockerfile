@@ -1,2 +1,2 @@
-FROM redis:3.2-alpine
+FROM redis
 CMD ["redis-server"]
