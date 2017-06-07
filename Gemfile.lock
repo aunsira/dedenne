@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dedenne (0.0.1)
+    dedenne (0.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -64,10 +64,11 @@ DEPENDENCIES
   dedenne!
   foreman
   rake (~> 10.0)
+  redis
   resque
   rspec
   sinatra
   streamio-ffmpeg
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

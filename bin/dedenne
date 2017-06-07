@@ -1,5 +1,3 @@
 #!/usr/bin/env ruby
 
 require 'dedenne'
-
-Dedenne::transcode(ARGV[0], ARGV[1], ARGV[2], ARGV[3])
