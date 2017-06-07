@@ -1,4 +1,5 @@
 # Dedenne
+![dedenne](http://cdn.bulbagarden.net/upload/thumb/c/c9/702Dedenne.png/500px-702Dedenne.png)
 
 This project is to try `streamio-ffmpeg` out. This will transcode video to be hls format and upload to Amazon S3 bucket.
 
@@ -8,15 +9,17 @@ Clone this repository and run
 
     $ bundle install
 
-You need to export `AWS_S3_ACCESS_KEY_ID`, `AWS_S3_SECRET_ACCESS_KEY` and `REDIS_PASSWORD` if you need to upload to Amazon S3.
+You also need to export `AWS_S3_ACCESS_KEY_ID`, `AWS_S3_SECRET_ACCESS_KEY` and `REDIS_PASSWORD`.
 
 ## Usage
 
-You can transcode video from local terminal with this command
+This app only provides `GET` endpoint for transcoding video and pushing to S3. For example
 
-    $ bundle exec bin/dedenne <video_id> <chapter_id> <video_version> <host>
+    $ curl http://localhost:4567/transcode/course/2/chapter/4?version=1&app_name=skilllane
 
-You can also call via API url with `http://localhost:4567/transcode/course/:course_id/chapter/:chapter_id?version={:video_version}` if you have already video on S3 bucket.
+## Run tests
+
+    $ bundle exec rspec
 
 ## Docker stuff
 
