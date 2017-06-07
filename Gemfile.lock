@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dedenne (0.1.1)
+    dedenne (0.2.0)
 
 GEM
   remote: https://rubygems.org/
