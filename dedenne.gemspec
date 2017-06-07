@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "sinatra"
   spec.add_development_dependency "resque"
   spec.add_development_dependency "foreman"
+  spec.add_development_dependency "redis"
 end

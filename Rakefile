@@ -1,5 +1,6 @@
 require_relative 'app'
 require_relative 'config/resque'
 require 'resque'
-Resque.redis = Config.redis_url || Config.local_redis
+require 'redis'
+Resque.redis = Redis.new(url: Config.redis_url)
 require 'resque/tasks'
