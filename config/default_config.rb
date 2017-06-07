@@ -35,6 +35,7 @@ class DefaultConfig
   end
 
   def transcode_salt
+    'foobar'
   end
 
   def transcode_status
