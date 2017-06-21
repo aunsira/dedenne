@@ -1,11 +1,10 @@
 require 'spec_helper'
 
 describe Dedenne::StorageService do
-
   before(:each) do
-    @course_id = "1"
-    @chapter_id = "2"
-    @video_version = "-1"
+    @course_id = '1'
+    @chapter_id = '2'
+    @video_version = '-1'
     @service = Dedenne::StorageService.new(@course_id, @chapter_id, @video_version, 'SkillLane')
   end
 
@@ -25,7 +24,7 @@ describe Dedenne::StorageService do
     end
 
     it 'should return transcode video path' do
-      expect(@service.transcoded_video_path).to match("video/1/2-1/36155ffb5f8a6e48dd040c384ccf28d24e0746c4/index.m3u8")
+      expect(@service.transcoded_video_path).to match('video/1/2-1/36155ffb5f8a6e48dd040c384ccf28d24e0746c4/index.m3u8')
     end
 
     it 'should find correctly that video chapter is arleady transcoded' do

@@ -1,4 +1,4 @@
-require "dedenne/transcoder"
+require 'dedenne/transcoder'
 
 module Dedenne
   class TranscoderQueue

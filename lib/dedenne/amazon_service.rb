@@ -5,8 +5,8 @@ module Dedenne
     attr_reader :key_id, :secret_key
 
     def initialize
-      @key_id     = ENV["AWS_S3_ACCESS_KEY_ID"]
-      @secret_key = ENV["AWS_S3_SECRET_ACCESS_KEY"]
+      @key_id     = ENV['AWS_S3_ACCESS_KEY_ID']
+      @secret_key = ENV['AWS_S3_SECRET_ACCESS_KEY']
       setup_config
     end
 
@@ -21,10 +21,8 @@ module Dedenne
     private
 
       def setup_config
-        Aws.config.update({
-          credentials: Aws::Credentials.new(key_id, secret_key),
-          region: 'ap-southeast-1'
-        })
+        Aws.config.update(credentials: Aws::Credentials.new(key_id, secret_key),
+                          region: 'ap-southeast-1')
       end
 
       def s3_client

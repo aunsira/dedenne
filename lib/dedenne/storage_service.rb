@@ -6,11 +6,8 @@ require 'default_config'
 require 'dedenne/amazon_service'
 require 'dedenne/request_handler'
 
-
 module Dedenne
-
   class StorageService
-
     attr_reader :course_id, :chapter_id, :video_version, :upload_bucket,
                 :transcoded_bucket, :app_name, :host, :config
 
@@ -32,8 +29,8 @@ module Dedenne
       files_in_folder.each do |filename|
         file = File.open(filename)
         s3.bucket(transcoded_bucket)
-          .object("#{filename.gsub(HOME_PATH + "/", "")}")
-          .put(file, {body: file, acl: "public-read"} )
+          .object(filename.gsub(HOME_PATH + '/', '').to_s)
+          .put(file, body: file, acl: 'public-read')
       end
 
       RequestHandler.new(chapter_id, host)
@@ -42,7 +39,7 @@ module Dedenne
       puts "============== Transcoded video files of course: #{course_id}, chapter_id: #{chapter_id} have been uploaded ==============="
 
       # Remove local video files
-      FileUtils.rm_rf(HOME_PATH + "/video/#{course_id}/") if File.exists?(HOME_PATH + "/video/#{course_id}/")
+      FileUtils.rm_rf(HOME_PATH + "/video/#{course_id}/") if File.exist?(HOME_PATH + "/video/#{course_id}/")
     end
 
     def get_video_file
@@ -61,7 +58,7 @@ module Dedenne
     end
 
     def transcoded_video_path
-      "#{original_video_path.gsub(".mp4", "")}/#{hash}/index.m3u8"
+      "#{original_video_path.gsub('.mp4', '')}/#{hash}/index.m3u8"
     end
 
     def already_transcoded?
@@ -89,7 +86,7 @@ module Dedenne
 
       def download_path
         download_path = HOME_PATH + "/video/#{course_id}/"
-        FileUtils.mkdir_p(download_path) unless File.exists? download_path
+        FileUtils.mkdir_p(download_path) unless File.exist? download_path
         download_path
       end
   end

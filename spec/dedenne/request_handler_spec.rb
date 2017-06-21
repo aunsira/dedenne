@@ -1,11 +1,10 @@
 require 'spec_helper'
 
 describe Dedenne::RequestHandler do
-
   before(:each) do
-    @course_id = "1"
-    @chapter_id = "2"
-    @video_version = "-1"
+    @course_id = '1'
+    @chapter_id = '2'
+    @video_version = '-1'
     @service = Dedenne::StorageService.new(@course_id, @chapter_id, @video_version, 'skilllane')
   end
 
